@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     private float jump;
     private Rigidbody2D rb;
     private bool isGrounded;
+    public Animator anim;
 
     void Awake()
     {
@@ -19,9 +20,19 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.AddForce(Vector2.up * jump);
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            anim.SetTrigger("Slide");
+        }
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            anim.SetTrigger("Idle");
         }
     }
 
