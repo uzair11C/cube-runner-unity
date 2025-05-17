@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,6 +9,16 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     public Animator anim;
 
+    [SerializeField]
+    private GameObject gameOverUI;
+    private ObstacleSpawnManager spawnManager;
+
+    [SerializeField]
+    private TextMeshProUGUI gameOverHighScoreText;
+
+    [SerializeField]
+    private TextMeshProUGUI gameOverCurrentScoreText;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -15,12 +26,16 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
+        gameOverHighScoreText.text =
+            "High Score: " + PlayerPrefs.GetInt("CubeRunner_highScore", 0).ToString();
+        spawnManager = GameObject
+            .FindGameObjectWithTag("GameManager")
+            .GetComponent<ObstacleSpawnManager>();
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         {
             rb.AddForce(Vector2.up * jump);
         }
@@ -42,10 +57,6 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
-        else
-        {
-            Debug.Log("Collided with: " + other.gameObject.name);
-        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -53,6 +64,23 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            spawnManager.isGameOver = true;
+            gameOverUI.SetActive(true);
+            spawnManager.scoreText.gameObject.SetActive(false);
+            Time.timeScale = 0f;
+            gameOverCurrentScoreText.text = "Your Score: " + (int)spawnManager.score;
+            if (PlayerPrefs.GetInt("CubeRunner_highScore", 0) < (int)spawnManager.score)
+            {
+                gameOverHighScoreText.text = "High Score: " + (int)spawnManager.score;
+                PlayerPrefs.SetInt("CubeRunner_highScore", (int)spawnManager.score);
+            }
         }
     }
 }

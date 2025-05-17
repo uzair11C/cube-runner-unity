@@ -6,24 +6,12 @@ public class ColorScript : MonoBehaviour
     private Renderer playerRenderer;
     [SerializeField]
     private Renderer bgRenderer;
-    // [SerializeField]
-    // private Renderer obstacleRenderer;
 
     void Start()
     {
-        // Color darkColor1 = RandomColor(bright: false);
-        // Color darkColor2;
         playerRenderer.material.color = RandomColor(bright: true);
         bgRenderer.material.color = RandomColor(bright: false);
-        // obstacleRenderer.material.color = RandomColor(bright: true);
-        // do
-        // {
-        //     darkColor2 = RandomColor(bright: false);
-        // } while (AreColorsTooSimilar(darkColor1, darkColor2));
-
-        // groundRenderer.material.color = darkColor2;
     }
-
 
     Color RandomColor(bool bright)
     {

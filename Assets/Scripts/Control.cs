@@ -1,21 +1,17 @@
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Control : MonoBehaviour
 {
-    public void ShowInfoScreen()
+    public void ShowMenuScreen()
     {
-        // SceneManager.LoadScene("Info");
-    }
-
-    public void ShowInstructionScreen()
-    {
-        // SceneManager.LoadScene()
+        SceneManager.LoadScene("MenuScene");
     }
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("GameScene");
     }
 
     public void QuitGame()
